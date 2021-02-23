@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="fa/css/all.min.css"/>
+  
+  <title>Analogue Clock with Night Mode</title>
+  
+  <style>
+  
+  *{
+  
+  margin: 0;
+  padding: 0;
+  font-family: arial;
+  box-sizing: border-box;
+  
+  }
+  
+  :root{
+  
+  --bg1: #E8EDE7;
+  --bg2: #1D231C;
+  
+  }
+  
+  body{
+  
+  background: var(--bg1);
+  
+  }
+  
+  #clock{
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  height: 500px;
+  width: 500px;
+  border-radius: 50%;
+  background: var(--bg1);
+  box-shadow: -6px -6px 4px rgba(255,255,255,0.8),
+   6px 6px 8px rgba(0,0,0,0.2);
+  
+  }
+  
+  #clock button{
+  
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  height: 60px;
+  width: 60px;
+  font-size: 40px;
+  border-radius: 50px;
+  border: none;
+  outline: none;
+  background: none;
+  color: #CC8456;
+  box-shadow: inset -2px -2px 3px rgba(255,255,255,0.3),
+  inset 2px 2px 3px rgba(0,0,0,0.2);
+   z-index: -1;
+  
+  }
+  
+  #bar{
+  
+  background: #888;
+  position: absolute;
+  
+  }
+  
+  #bar:nth-child(1),
+  #bar:nth-child(3){
+  
+  height: 30px;
+  width: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  }
+  
+  #bar:nth-child(1){
+  
+  top: 5px;
+  
+  }
+  
+  #bar:nth-child(3){
+  
+  bottom: 5px;
+  
+  }
+  
+  #bar:nth-child(2),
+  #bar:nth-child(4){
+  
+  height: 6px;
+  width: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  
+  }
+  
+  #bar:nth-child(2){
+  
+  left: 5px;
+  
+  }
+  
+  #bar:nth-child(4){
+  
+  right: 5px;
+  
+  }
+  
+  #hour,#min,#sec{
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-100%) rotate(0deg);
+  transform-origin: bottom;
+  height: 170px;
+  width: 5px;
+  border-radius:  5px;
+  box-shadow: -1px -1px 2px rgba(255,255,255,0.5), 2px 2px 3px rgba(0,0,0,0.2);
+  
+  }
+  
+  #hour{
+  
+  width: 9px;
+  background: #888;
+  height: 130px;
+  
+  }
+  
+  #min{
+  
+  background: #CB8355;
+  
+  }
+  
+  #sec{
+  
+  width: 2px;
+  background: #444;
+  height: 210px;
+  
+  }
+  
+  #sec:after{
+  
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 50px;
+  background: #444;
+  border-radius:  5px;
+  box-shadow: -1px -1px 2px rgba(255,255,255,0.5), 2px 2px 3px rgba(0,0,0,0.2);
+  
+  }
+  
+  #center{
+  
+  height: 30px;
+  width: 30px;
+  background: var(--bg1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  border: 5px solid #555;
+  
+  }
+  
+  .night{
+  
+  background: #1D231C !important;
+  box-shadow: -3px -3px 4px rgba(255,255,255,0.2),
+   4px 4px 6px rgba(0,0,0,0.5),inset -3px -3px 4px rgba(255,255,255,0.2),inset 
+   4px 4px 6px rgba(0,0,0,0.5) !important;
+  
+  }
+  
+  .center{
+  
+  background: var(--bg2) !important;
+  border: 5px solid #aaa !important;
+  
+  }
+  
+  </style>
+  
+</head>
+<body>
+
+  <div id="clock">
+  
+    <div id="bar"></div>
+    <div id="bar"></div>
+    <div id="bar"></div>
+    <div id="bar"></div>
+    
+    <div id="hour"></div>
+    <div id="min"></div>
+    <div id="sec"></div>
+    
+    <div id="center"></div>
+    
+    <button id="btn" onclick="dark()"><i class="fas fa-moon"></i></button>
+        
+  </div>
+  
+  <script>
+  
+  let secDial = document.querySelector("#sec");
+  let minDial = document.querySelector("#min");
+  let hourDial = document.querySelector("#hour");
+   
+  let translate = "translate(-50%,-100%) ";
+  
+  setInterval(function(){
+  
+  let mainTime = new Date();
+  let ss = mainTime.getSeconds();
+  let mm = mainTime.getMinutes();
+  let hh = mainTime.getHours();
+  
+  secDial.style.transform = translate + "rotate("+ ss*6 +"deg)";
+  
+  minDial.style.transform = translate + "rotate("+ (mm+(ss/60))*6 +"deg)";
+  
+  hourDial.style.transform = translate + "rotate("+ (hh+(mm/60)+(ss/3600))*30 +"deg)";
+  
+  },1)
+  
+  
+  
+  function dark(){
+  
+  btn.classList.toggle("dark");
+  
+  if(btn.classList.contains("dark")){
+  
+  btn.innerHTML = `<i class="fas fa-sun"></i>`;
+  document.body.style.background = "#1D231C";
+  clock.classList.add("night");
+  center.classList.add("center");
+  
+  for(let i = 0;i < 4;i++){
+  
+  let x = document.querySelectorAll("#bar");
+  
+  x[i].style.background = "#fff";
+  
+  }
+  
+  secDial.style.background = "#fff";
+  hourDial.style.background = "#ddd";
+  
+  }
+  
+  else{
+  
+  btn.innerHTML = `<i class="fas fa-moon"></i>`;
+  document.body.style.background = "var(--bg1)";
+  clock.classList.remove("night");
+  center.classList.remove("center");
+  
+  for(let i = 0;i < 4;i++){
+  
+  let x = document.querySelectorAll("#bar");
+  
+  x[i].style.background = "#888";
+  
+  }
+  
+  secDial.style.background = "#444";
+  hourDial.style.background = "#888";
+  
+  }
+  
+  }
+  
+  </script>
+    
+</body>
+</html>
